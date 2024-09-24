@@ -1,14 +1,28 @@
 {
   "name": "stayte",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "dev": "",
-    "swc:build": "swc src -d dist",
-    "build": ""
+    "swc:build": "swc --out-dir dist src --strip-leading-paths",
+    "swc:dev": "bun run swc:build --watch",
+    "tsc:build": "tsc --preserveWatchOutput",
+    "tsc:dev": "tsc --watch --preserveWatchOutput",
+    "build": "run-p swc:build tsc:build",
+    "dev": "run-p swc:dev tsc:dev"
   },
   "devDependencies": {
     "@swc/cli": "0.4.1-nightly.20240914",
     "@swc/core": "1.7.28",
+    "chokidar": "4.0.1",
     "npm-run-all": "4.1.5",
     "typescript": "5.6.2"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "zod": "3.23.8"
   }
 }
