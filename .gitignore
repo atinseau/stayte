@@ -4,8 +4,6 @@
 
 bun.lockb
 
-./patches
-
 # Logs
 
 logs
