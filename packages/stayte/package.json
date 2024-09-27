@@ -6,24 +6,24 @@
       "default": "./dist/index.js"
     }
   },
+  "files": [
+    "dist/index.js.map"
+  ],
   "scripts": {
-    "swc:build": "swc --out-dir dist src --strip-leading-paths",
-    "swc:dev": "bun run swc:build --watch",
-    "tsc:build": "tsc --preserveWatchOutput",
-    "tsc:dev": "tsc --watch --preserveWatchOutput",
-    "build": "run-p swc:build tsc:build",
-    "dev": "run-p swc:dev tsc:dev"
+    "postinstall": "node scripts/patch.js",
+    "dev": "rollup --config rollup.config.mjs --watch",
+    "build": "rm -rf dist && rollup --config rollup.config.mjs"
   },
   "devDependencies": {
-    "@swc/cli": "0.4.1-nightly.20240914",
-    "@swc/core": "1.7.28",
-    "@types/deep-equal": "^1.0.4",
-    "chokidar": "4.0.1",
+    "@rollup/plugin-node-resolve": "15.3.0",
+    "@rollup/plugin-typescript": "12.1.0",
     "npm-run-all": "4.1.5",
+    "rollup": "4.22.4",
+    "rollup-plugin-esbuild-minify": "1.1.2",
     "typescript": "5.6.2"
   },
   "dependencies": {
-    "deep-equal": "^2.2.3",
+    "fast-equals": "5.0.1",
     "react": "18.3.1",
     "zod": "3.23.8"
   }

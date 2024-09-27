@@ -16,5 +16,11 @@
   "dependencies": {
     "turbo": "^2.1.2"
   },
-  "packageManager": "bun@1.1.26"
+  "packageManager": "bun@1.1.26",
+  "trustedDependencies": [
+    "stayte"
+  ],
+  "patchedDependencies": {
+    "next@14.2.13": "patches/next@14.2.13.patch"
+  }
 }

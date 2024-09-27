@@ -1,6 +1,6 @@
-import { z, ZodBoolean, ZodError, ZodNumber, ZodObject, ZodType } from "zod"
+import { z, ZodError, ZodType } from "zod"
 import { safeParse } from "../utils"
-import equal from "deep-equal"
+import { deepEqual } from "fast-equals"
 
 export type GluonOptions<DefaultValue, Schema> = {
   schema?: Schema
@@ -74,18 +74,21 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     if (this.options.schema) {
       let parsedValue = value
 
+      // @ts-ignore
+      const typeName = this.options.schema._def.typeName
+
       // This formatting is only needed when the incomming value is a string
       // so we need to convert it to the right type accordingly to the schema
       if (typeof value === 'string') {
-        if (this.options.schema instanceof ZodObject) {
+        if (typeName === 'ZodObject') {
           parsedValue = safeParse(value)
         }
 
-        if (this.options.schema instanceof ZodBoolean) {
+        if (typeName === 'ZodBoolean') {
           parsedValue = value === 'true' || value === '1'
         }
 
-        if (this.options.schema instanceof ZodNumber) {
+        if (typeName === 'ZodNumber') {
           parsedValue = Number(value)
         }
       }
@@ -123,7 +126,7 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
 
     // If there is no error, it's mean error was removed and we can trigger the callback
     // or the error changed, so we need to trigger the callback
-    if (!this.error || !equal(oldError?.errors, this.error?.errors)) {
+    if (!this.error || !deepEqual(oldError?.errors, this.error?.errors)) {
       alreadHasError = false
     }
 
@@ -132,7 +135,7 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     // only in the case where the value is valid (no error)
     // and also if there is already an error, we don't need to emit the new value (prevent unwanted re-render)
     if (
-      (!this.error && equal(oldValue, this.value))
+      (!this.error && deepEqual(oldValue, this.value))
       || alreadHasError
     ) return
 
@@ -167,6 +170,6 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
   // to set the default value depending on the behavior of the subclass
   // For example, the query gluon will watch the url to fetch the right value
   // and fill the value property accordingly
-  abstract setup(): void
+  abstract setup(...args: any[]): void
   abstract set(value: T): void
 }

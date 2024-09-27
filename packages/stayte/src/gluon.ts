@@ -16,7 +16,9 @@ export const gluon = <
   T = false
 >(
   name: string,
-  options: GluonOptions<T, Schema> & { from: U }
+  options: GluonOptions<T, Schema>
+    & { from: U }
+    & { options?: Parameters<GluonMap<any>[U]['setup']>[0] }
 ): (
     Schema extends ZodType
     ? GluonMap<z.infer<Schema>>[U]

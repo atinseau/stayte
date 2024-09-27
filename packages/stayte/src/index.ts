@@ -1,3 +1,3 @@
-export * from './gluon'
-export * from './computed'
-export * from "./hooks/useGluon"
+export { gluon } from './gluon'
+export { computed } from './computed'
+export { useGluon } from "./hooks/useGluon"

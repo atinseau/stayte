@@ -1,14 +1,25 @@
 import { isServer } from "../utils"
 import { Gluon } from "./Gluon"
 
+// disableSanitize is used to prevent the sanitization of the url
+// it's mean if there is a html tag in the url, the behavior of convertion to a string to prevent sql injection
+// will be disabled
+type QueryGluonOptions = {
+  disableSanitize?: boolean
+}
+
 export class QueryGluon<T> extends Gluon<T> {
 
   static PUSH_STATE_DELAY = 10
 
-  setup() {
+  // @ts-ignore
+  setup(options: QueryGluonOptions) {
+    // this workaround is needed because the hostname is not available in the globalThis
+    // so to have a behavior that is working on both server and client, we need to use the
+    // example.com hostname to retrieve the search
     // @ts-ignore
-    const url = (typeof window === 'undefined' ? globalThis?.request?.url ?? '' : window.location.search).replace(/^\//, '')
-    const searchParams = new URLSearchParams(url)
+    const url = new URL(`http://example.com${typeof window === 'undefined' ? globalThis?.request?.url ?? '' : window.location.search}`)
+    const searchParams = new URLSearchParams(url.search)
     const value = searchParams.get(this.name) as any
 
     if (value) {

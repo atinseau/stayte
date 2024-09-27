@@ -1,7 +1,7 @@
 import { useRef, useSyncExternalStore } from 'react'
 import { Gluon, GluonOptions } from '../class/Gluon'
 import { gluon, GluonMap } from '../gluon'
-import { z, ZodError, ZodType } from 'zod'
+import { type z, ZodError, ZodType } from 'zod'
 import { ReadGluon } from '../class/ReadGluon'
 
 
@@ -14,7 +14,9 @@ export const useGluon = <
   name: Name,
   options?: (
     Name extends string
-    ? GluonOptions<T, Schema> & { from: U }
+    ? GluonOptions<T, Schema>
+      & { from: U }
+      & { options?: Parameters<GluonMap<any>[U]['setup']>[0] }
     : never
   )
 ): (

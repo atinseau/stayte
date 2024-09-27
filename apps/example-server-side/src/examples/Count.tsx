@@ -8,7 +8,7 @@ export default function Count() {
 
   const count = useGluon('count', {
     from: 'query',
-    defaultValue: 10
+    defaultValue: 10,
   })
 
   useEffect(() => {
