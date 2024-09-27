@@ -2,6 +2,7 @@
   "name": "@stayte/repo",
   "workspaces": [
     "packages/*",
+    "examples/*",
     "apps/*"
   ],
   "scripts": {
