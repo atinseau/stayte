@@ -1,26 +1,48 @@
-import { gluon } from "stayte";
+import { gluon, computed } from "stayte";
 import { z } from "zod";
 
+// export const countGluon2 = gluon('count', {
+//   from: 'local',
+//   defaultValue: 20
+// })
+
+// export const userGluon = gluon('user', {
+//   from: 'local',
+//   defaultValue: {
+//     name: 'John Doe',
+//     age: 30
+//   }
+// })
+
+// userGluon.set({
+//   name: 'John Doe',
+//   age: 20
+// })
 
 export const countGluon = gluon('count', {
   from: 'query',
   schema: z.number(),
-  defaultValue: 0
+  // defaultValue: 0
 })
 
 export const isOnlineGluon = gluon('isOnline', {
-  from: 'query',
+  from: 'local',
   schema: z.boolean(),
   defaultValue: false
 })
 
 export const floatGluon = gluon('float', {
-  from: 'query',
+  from: 'local',
   schema: z.number(),
-  defaultValue: 0
+  defaultValue: 0,
 })
 
+export const doubleGluon = computed(() => floatGluon.get() * 2, [
+  floatGluon
+])
 
-floatGluon.subscribe((value) => {
-  console.log('float', value)
-})
+export const isOnlineMessage = computed(() => {
+  return isOnlineGluon.get() ? 'You are online' : 'You are offline'
+}, [
+  isOnlineGluon
+])

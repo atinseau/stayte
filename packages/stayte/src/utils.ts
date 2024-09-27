@@ -9,3 +9,7 @@ export const safeParse = (value: any) => {
     return value
   }
 }
+
+export const isServer = () => {
+  return typeof window === 'undefined'
+}

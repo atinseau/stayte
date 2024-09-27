@@ -15,6 +15,7 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "outDir": "dist",
+    "types": ["node"],
 
     /* Linting */
     "strict": true,

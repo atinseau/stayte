@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { useGluon } from "stayte"
-import { countGluon, floatGluon, isOnlineGluon } from "../gluon"
+import { countGluon, doubleGluon, floatGluon, isOnlineGluon } from "../gluon"
 
 function CountButton() {
   const count = useGluon(countGluon)
@@ -36,7 +36,13 @@ function FloatInput() {
       <p>Float : {float.value}</p>
     </div>
   )
+}
 
+function DoubleButton() {
+  const double = useGluon(doubleGluon)
+  return (
+    <p>Double : {double.value}</p>
+  )
 }
 
 function Index() {
@@ -47,6 +53,7 @@ function Index() {
     <CountButton />
     <OnlineButton />
     <FloatInput />
+    <DoubleButton />
 
     <Link to={{ pathname: "/welcome", search: window.location.search }}>Go to welcome</Link>
   </div>)
