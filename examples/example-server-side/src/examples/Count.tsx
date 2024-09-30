@@ -1,19 +1,26 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useGluon } from "stayte";
+import { useGluon, gluon, computed } from "stayte";
 
-export default function Count() {
+const countGluon = gluon('count', {
+  from: 'session',
+  defaultValue: 10
+})
 
+console.log('countGluon', countGluon.get())
+
+const doubleGluon = computed(() => countGluon.get() * 2, [countGluon])
+
+console.log('doubleGluon', doubleGluon.get())
+
+// doubleGluon.subscribe((value) => {
+//   console.log('double', value)
+// })
+
+function CountA() {
   const [normalCount, setNormalCount] = useState(0)
 
-  const count = useGluon('count', {
-    from: 'query',
-    defaultValue: 10,
-  })
-
-  useEffect(() => {
-    console.log('Mounted', count.value)
-  }, [count.value])
+  const count = useGluon(countGluon)
 
   return (<div>
     <p>salut tout le monde {count.value ?? 'null'}</p>
@@ -23,5 +30,18 @@ export default function Count() {
 
     <button onClick={() => setNormalCount(normalCount + 1)}>increment normal count {normalCount}</button>
     <button onClick={() => setNormalCount(0)}>reset normal count</button>
- </div>);
+  </div>);
+}
+
+function CountB() {
+  const doubleCount = useGluon(doubleGluon)
+  return (<div>{doubleCount.value ?? 'null'}</div>)
+}
+
+export default function Count() {
+
+  return <div>
+    <CountA />
+    <CountB />
+  </div>
 }

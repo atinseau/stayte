@@ -3,7 +3,14 @@ import { Gluon, GluonOptions } from '../class/Gluon'
 import { gluon, GluonMap } from '../gluon'
 import { type z, ZodError, ZodType } from 'zod'
 import { ReadGluon } from '../class/ReadGluon'
+import { isSecureHydrationGluon } from '../utils'
 
+function asHydrationGuard(gluon: Gluon<any> | ReadGluon<any>) {
+  if (gluon instanceof Gluon) {
+    return isSecureHydrationGluon(gluon)
+  }
+  return gluon.asSecureHydrationDeps()
+}
 
 export const useGluon = <
   U extends keyof GluonMap<any>,
@@ -15,8 +22,8 @@ export const useGluon = <
   options?: (
     Name extends string
     ? GluonOptions<T, Schema>
-      & { from: U }
-      & { options?: Parameters<GluonMap<any>[U]['setup']>[0] }
+    & { from: U }
+    & { options?: Parameters<GluonMap<any>[U]['setup']>[0] }
     : never
   )
 ): (
@@ -25,7 +32,8 @@ export const useGluon = <
     : { value: Name extends Gluon<any> | ReadGluon<any> ? NonNullable<Name['value']> : never, error?: ZodError }
   ) => {
 
-  const gluonRef = useRef<Gluon<any>>()
+  const gluonRef = useRef<Gluon<any> | ReadGluon<any>>()
+  const isMountedRef = useRef(false)
   const countRef = useRef(0)
 
   if (!gluonRef.current) {
@@ -37,23 +45,22 @@ export const useGluon = <
   const proxyRef = useRef(new Proxy({ value: gluonRef.current!.get(), error: null }, {
     get: (...args) => {
       if (args[1] === 'value') {
-        return gluonRef.current!.get()
+        if (asHydrationGuard(gluonRef.current!) && !isMountedRef.current) return null
+        return gluonRef.current?.get()
       }
 
-      if (args[1] === 'error') {
+      if (args[1] === 'error' && gluonRef.current instanceof Gluon) {
         return gluonRef.current!.error
       }
 
       return Reflect.get(...args)
     },
     set: (...args) => {
-
       if (gluonRef.current instanceof ReadGluon) {
         console.error('Cannot set a ReadGluon')
         return false
       }
 
-      countRef.current++
       if (args[1] === 'value') {
         gluonRef.current!.set(args[2])
       }
@@ -69,7 +76,24 @@ export const useGluon = <
   // if the callback is called but the snapshot didn't change, the component will not be re-rendered
   useSyncExternalStore(
     (callback) => {
-      const unsubscribe = gluonRef.current!.subscribe(callback)
+
+      if (!isMountedRef.current) {
+        isMountedRef.current = true
+
+        // This behavior is needed to prevent hydration error
+        // because some gluon children class are not able to fetch the value from 
+        // the server (from the request) and we need to skip the first render (first value is null)
+        // and manually calling the callback
+        if (asHydrationGuard(gluonRef.current!) && countRef.current === 0) {
+          countRef.current++
+          callback()
+        }
+      }
+
+      const unsubscribe = gluonRef.current!.subscribe(() => {
+        countRef.current++
+        callback()
+      })
       return unsubscribe
     },
     () => countRef.current,

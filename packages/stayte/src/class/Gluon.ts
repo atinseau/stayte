@@ -1,9 +1,11 @@
 import { z, ZodError, ZodType } from "zod"
-import { safeParse } from "../utils"
+import { isServer, safeParse } from "../utils"
 import { deepEqual } from "fast-equals"
 
 export type GluonOptions<DefaultValue, Schema> = {
   schema?: Schema
+  ssr?: boolean
+  options?: any
   defaultValue?: Schema extends ZodType ? z.infer<Schema> : DefaultValue
 }
 
@@ -28,11 +30,12 @@ export abstract class GluonSubscription<T> {
 
 export abstract class Gluon<T> extends GluonSubscription<T> {
 
+  static SECURE_HYDRATION = false
+
   public value: T | null = null
   public error: ZodError | null = null
 
   private requestId: string | null = null
-
   constructor(
     protected name: string,
     protected options: GluonOptions<T, ZodType>
@@ -41,14 +44,12 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
 
     // This is used to avoid calling setup() on each render
     // each request is unique
-    // @ts-ignore
-    if (typeof window === 'undefined') {
-      // @ts-ignore
-      this.requestId = globalThis.request.id
+    if (isServer()) {
+      this.requestId = this.getRequestId()
     }
 
     this.computeSchema()
-    this.applySetup()
+    this.setup(this.options.options)
   }
 
   // This method is used when there is no schema provided
@@ -63,11 +64,24 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     }
   }
 
-  private applySetup() {
-    this.setup?.()
+  protected configure(callback?: () => void) {
+    callback?.()
+
+    // This is the default behavior, when there is no value at initialization (setted by the callback)
+    // no error and there is a default value, we set the value to the default value
+    // if she is provided
     if (!this.value && !this.error && typeof this.options.defaultValue !== 'undefined') {
       this.set(this.options.defaultValue)
     }
+  }
+
+  private getRequestId() {
+    // @ts-ignore
+    const requestId = globalThis?.request?.id ?? null
+    if (!requestId) {
+      throw new Error('Cannot retrieve the request id, please make sure that framework is correctly patched or you are not using static rendering')
+    }
+    return requestId
   }
 
   protected parse(value: any) {
@@ -154,16 +168,22 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     // to hydrate the gluon with the right value
     // to prevent to many setup() calls with execute the setup only 
     // when the request is different
-    if (typeof window === 'undefined') {
-      // @ts-ignore
-      const requestId = globalThis.request.id
+    if (isServer()) {
+      const requestId = this.getRequestId()
       if (this.requestId !== requestId) {
-        this.applySetup()
+        this.setup(this.options.options)
         this.requestId = requestId
       }
     }
 
     return this.value as T
+  }
+
+  // This method is used to know if the gluon need to be hydrated
+  // it's mean the gluon came with a presetted-value from the server and some code
+  // should be apply to hydrate the value, but this behavior could be disabled
+  public isSSR() {
+    return this.options.ssr ?? true
   }
 
   // The setup method is called by every subclass that want

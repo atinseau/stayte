@@ -14,17 +14,26 @@ export class QueryGluon<T> extends Gluon<T> {
 
   // @ts-ignore
   setup(options: QueryGluonOptions) {
-    // this workaround is needed because the hostname is not available in the globalThis
-    // so to have a behavior that is working on both server and client, we need to use the
-    // example.com hostname to retrieve the search
-    // @ts-ignore
-    const url = new URL(`http://example.com${typeof window === 'undefined' ? globalThis?.request?.url ?? '' : window.location.search}`)
-    const searchParams = new URLSearchParams(url.search)
-    const value = searchParams.get(this.name) as any
+    this.configure(() => {
+      // this workaround is needed because the hostname is not available in the globalThis
+      // so to have a behavior that is working on both server and client, we need to use the
+      // example.com hostname to retrieve the search
+      // @ts-ignore
+      const url = new URL(`http://example.com${isServer() ? globalThis?.request?.url ?? '' : window.location.search}`)
+      const searchParams = new URLSearchParams(url.search)
+      let value = searchParams.get(this.name) as any
 
-    if (value) {
-      this.value = this.parse(value)
-    }
+      // If there is no value in the url and the gluon is alread initialized
+      // it's mean the user change the value manual in the url so we need to reset the internal value of
+      // the gluon by forcing the update with the default value
+      if (this.value && !value) {
+        value = this.options.defaultValue
+      }
+
+      if (value) {
+        this.value = this.parse(value)
+      }
+    })
   }
 
   set(value: T) {

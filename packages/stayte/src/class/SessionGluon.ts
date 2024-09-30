@@ -3,7 +3,7 @@ import { Gluon } from "./Gluon";
 
 
 
-export class LocalGluon<T> extends Gluon<T> {
+export class SessionGluon<T> extends Gluon<T> {
 
   static SECURE_HYDRATION = true
 
@@ -17,7 +17,7 @@ export class LocalGluon<T> extends Gluon<T> {
     }
 
     this.configure(() => {
-      const value = localStorage.getItem(this.name)
+      const value = sessionStorage.getItem(this.name)
       if (value) {
         this.value = this.parse(value)
       }
@@ -27,13 +27,13 @@ export class LocalGluon<T> extends Gluon<T> {
   set(value: T) {
 
     // Nothing could be done on the server
-    // because localStorage is not available 
+    // because sessionStorage is not available 
     if (isServer()) {
       return
     }
 
     this.update(value, () => {
-      localStorage.setItem(this.name, typeof value === 'object'
+      sessionStorage.setItem(this.name, typeof value === 'object'
         ? JSON.stringify(value)
         : value as any
       )

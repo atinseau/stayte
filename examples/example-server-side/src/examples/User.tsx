@@ -6,7 +6,7 @@ import { z } from "zod";
 export default function User() {
 
   const user = useGluon('user', {
-    from: 'query',
+    from: 'cookie',
     schema: z.object({
       name: z.string(),
       age: z.number()

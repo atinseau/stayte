@@ -2,12 +2,14 @@ import { z, ZodType } from "zod"
 import { GluonOptions } from "./class/Gluon"
 import { QueryGluon } from "./class/QueryGluon"
 import { LocalGluon } from "./class/LocalGluon"
+import { CookieGluon } from "./class/CookieGluon"
+import { SessionGluon } from "./class/SessionGluon"
 
 export type GluonMap<T> = {
   "query": QueryGluon<T>
-  "cookies": any
+  "cookie": CookieGluon<T>
   "local": LocalGluon<T>
-  "session": any
+  "session": SessionGluon<T>
 }
 
 export const gluon = <
@@ -35,6 +37,14 @@ export const gluon = <
 
   if (options.from === 'local') {
     return new LocalGluon(name, options as any) as any
+  }
+
+  if (options.from === 'cookie') {
+    return new CookieGluon(name, options as any) as any
+  }
+
+  if (options.from === 'session') {
+    return new SessionGluon(name, options as any) as any
   }
 
   throw new Error('Cannot create a Gluon from this source')
