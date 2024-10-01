@@ -97,6 +97,13 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
   plugins: [
+    [
+      'vercel-analytics',
+      {
+        debug: true,
+        mode: 'auto',
+      }
+    ],
     async function myPlugin(context, options) {
       return {
         name: "docusaurus-tailwindcss",
