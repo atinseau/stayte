@@ -23,6 +23,7 @@ if (!packageJson.patchedDependencies) {
   packageJson.patchedDependencies = {}
 }
 
+const patchedDependenciesCount = Object.keys(packageJson.patchedDependencies).length
 const scannedPackages = getScannedPackages()
 
 // Loop over the patch object and check if the package is already patched
@@ -49,7 +50,13 @@ for (const [name, patch] of Object.entries(PATCH)) {
   }
 }
 
-fs.writeFileSync(`${init_cwd}/package.json`, JSON.stringify(packageJson, null, 2), 'utf-8')
+
+// We only write the package.json if the number of patched dependencies has changed
+// this is to avoid unnecessary writes
+const newPatchedDependenciesCount = Object.keys(packageJson.patchedDependencies).length
+if (newPatchedDependenciesCount > patchedDependenciesCount) {
+  fs.writeFileSync(`${init_cwd}/package.json`, JSON.stringify(packageJson, null, 2), 'utf-8')
+}
 
 
 function getScannedPackages() {
