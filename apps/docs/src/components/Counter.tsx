@@ -1,9 +1,6 @@
 import { useGluon } from 'stayte';
 
 const Counter = () => {
-
-  console.log('render counter')
-
   const count = useGluon('count', {
     from: 'query',
   })
