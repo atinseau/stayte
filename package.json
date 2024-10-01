@@ -1,5 +1,6 @@
 {
   "name": "@stayte/repo",
+  "version": "0.0.5",
   "workspaces": [
     "packages/*",
     "examples/*",
@@ -23,6 +24,5 @@
   ],
   "patchedDependencies": {
     "next@14.2.13": "patches/next@14.2.13.patch"
-  },
-  "version": "0.0.1"
+  }
 }
