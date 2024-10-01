@@ -5,6 +5,8 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import CodeBlock from '@theme/CodeBlock';
+import { Analytics } from "@vercel/analytics/react"
+
 
 import styles from './index.module.css';
 import Counter from '../components/ClientCounter';
@@ -68,7 +70,7 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
-  return (
+  return (<>
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
@@ -77,5 +79,7 @@ export default function Home(): JSX.Element {
         <HomepageFeatures />
       </main>
     </Layout>
+    <Analytics />
+  </>
   );
 }
