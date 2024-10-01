@@ -1,13 +1,14 @@
 {
   "name": "@stayte/repo",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "workspaces": [
     "packages/*",
     "examples/*",
     "apps/*"
   ],
   "scripts": {
-    "dev": "turbo run dev --parallel"
+    "dev": "turbo run dev --parallel",
+    "bump": "npm version --workspaces --include-workspace-root --no-workspaces-update --no-git-tag-version --no-commit-hooks"
   },
   "devDependencies": {
     "@types/bun": "latest"

@@ -1,6 +1,6 @@
 {
   "name": "stayte",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "The persistent state library for the modern web",
   "exports": {
     ".": {
