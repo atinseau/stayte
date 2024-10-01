@@ -4,6 +4,16 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "build/**"
+      ]
     }
   }
 }

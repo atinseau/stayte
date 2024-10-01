@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
     "bump": "npm version --workspaces --include-workspace-root --no-workspaces-update --no-git-tag-version --no-commit-hooks"
   },
   "devDependencies": {
