@@ -1,9 +1,8 @@
 name: Stayte publish to npm
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [created]
 
 jobs:
   build:
