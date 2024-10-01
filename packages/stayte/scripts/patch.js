@@ -33,7 +33,7 @@ for (const [name, patch] of Object.entries(PATCH)) {
 
   // If the package is not installed on every project, we skip it
   const packageName = name.split('@')[0]
-  if (!scannedPackages.find((packageJson) => packageJson.dependencies[packageName])) {
+  if (!scannedPackages.find((packageJson) => (packageJson?.dependencies || {})[packageName])) {
     continue
   }
 
