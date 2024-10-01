@@ -12,4 +12,4 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-     - run: echo "🎉 The job was automatically by a ${{ github.event_name }} event."
+     - run: echo "🎉"
