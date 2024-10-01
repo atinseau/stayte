@@ -1,0 +1,48 @@
+---
+sidebar_position: 2
+---
+
+# Advanced usage
+
+## Computed value
+
+A gluon can be computed from other gluons, this is useful when you want to compute a value based on other values.
+
+To do that, you need to use the `computed` function:
+
+```js
+import { countGluon } from "./gluon";
+import { computed } from "stayte";
+
+const doubleGluon = computed(() => countGluon.get() * 2, [countGluon])
+
+const unsubscribe = doubleGluon.subscribe((value) => {
+  console.log(value) // 20, 40 (and no more)
+})
+
+countGluon.set(10) // <-- this will trigger the callback
+countGluon.set(20) // <-- this will trigger the callback
+
+unsubscribe()
+
+countGluon.set(30) // <-- this will not trigger the callback
+```
+
+`computed` method return a `ReadGluon`, so you can use it as usual (subscribe, get, useGluon, etc...) but a `ReadGluon`
+cannot be set, it's mean you cannot update the value of a computed gluon.
+
+Also a `ReadGluon` is not persistent, it's mean the callback will be executed everytime the application
+or the context is reloaded.
+
+:::info
+Actually `computed` is not able to detect automatically the dependencies 
+inside the callback, so you need to pass the dependencies as second argument.
+:::
+
+## Schema validation
+
+Stayte is using [zod](https://zod.dev/) to validate the default value, the initial value from the source and every new value set by the user of the gluon.
+
+If there is a schema provided in the configuration object, the value will be validated against the schema.
+
+If the value is not valid, the gluon switch to an **error mode**

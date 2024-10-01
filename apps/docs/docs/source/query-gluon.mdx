@@ -1,0 +1,28 @@
+---
+sidebar_position: 1
+---
+
+# Query gluon
+
+The query gluon is a gluon that is persisted in the query string of the url.
+
+It is fully compatible with server side rendering, it's mean you can use the value
+of the gluon directly in your server side code and stayte will be able to hydrate
+the value from the query string on the client side.
+
+:::warning
+Actually, the only framework that is supported is **next.js**, but you can use it in any framework just by
+importing the component or the gluon only in the client side (no ssr) and also it's only working in 
+dynamic rendering mode.
+:::
+
+## Usage
+
+```js
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  defaultValue: 10
+})
+```

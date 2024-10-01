@@ -1,0 +1,100 @@
+---
+sidebar_position: 1
+---
+
+# Basic usage
+
+## Declare a gluon
+
+The first way to use staye is to use it in vanilla javascript code.
+
+You declare a gluon by calling the `gluon` funcition and passing the name of the gluon
+
+```js
+import { gluon } from "stayte";
+
+const nameGluon = gluon('name')
+```
+
+This gluon is not persistent actually, it's just a variable that can be used across
+your application with every power of a gluon (subscription, set, get), just no persisted...
+
+## Persist a gluon
+
+To make a gluon persistent, you need to provide the `from` property in a configuration object to the `gluon` function:
+
+- `from`: The place where the gluon will be persisted, it can be `query`, `cookies`, `localStorage` or `sessionStorage`
+
+```js
+import { gluon } from "stayte";
+
+const nameGluon = gluon('name', {
+  from: 'query',
+})
+
+nameGluon.set('John Doe') // <-- this will update the query
+console.log(nameGluon.get()) // 'John Doe'
+```
+
+After that, you can use the gluon (*by exporting*) in your application as usual but it will be persisted in the place you specified.
+
+:::info
+If you reload the page, the value will be restored from the place you specified and there is not "empty" state,
+it's mean if the value is found in the source, it will be used directly, no tick with null or undefined values.
+:::
+
+
+## Use a gluon
+
+Once you have a gluon, you can use it by calling the `get` or `set` method:
+
+```js
+import { countGluon } from "./gluon";
+
+countGluon.set(10) // <-- this will update the query
+console.log(countGluon.get()) // 10
+```
+
+## Subscribe to a gluon
+
+Every gluon has subscriptions mechanism, you can subscribe to a gluon to be notified when the value changes,
+it's the mechanism used by the `useGluon` hook (see react usage).
+
+the `subscribe` method returns a function that you can call to unsubscribe from the subscription.
+
+Of course, like every other event listener, the subscription should be done before every `set` because
+if not, the subscription will not be triggered.
+
+```js
+import { countGluon } from "./gluon";
+
+// First we subscribe to the gluon
+const unsubscribe = countGluon.subscribe((value) => {
+  // When set is called, this callback will be triggered
+  console.log('countGluon changed', value) // 10 (and no more)
+})
+
+// Then we set the value
+countGluon.set(10)
+
+// We unsubscribe from the subscription
+unsubscribe()
+
+countGluon.set(20) // <--And finally, this will not trigger the callback
+```
+
+## Default value
+
+You can provide a default value to the gluon, it will be used when the value is not found in the source:
+
+```js
+
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  defaultValue: 10
+})
+
+console.log(countGluon.get()) // 10
+```
