@@ -1,6 +1,6 @@
 {
   "name": "stayte",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The persistent state library for the modern web",
   "exports": {
     ".": {
@@ -11,11 +11,11 @@
   "files": [
     "dist",
     "patches",
-    "scripts",
+    "scripts/patch.js",
     "tsconfig.json"
   ],
   "scripts": {
-    "postinstall": "node scripts/patch.js > file",
+    "postinstall": "node scripts/patch.js",
     "dev": "rollup --config rollup.config.mjs --watch",
     "build": "rm -rf dist && rollup --config rollup.config.mjs"
   },

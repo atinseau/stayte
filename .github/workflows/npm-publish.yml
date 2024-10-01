@@ -1,0 +1,12 @@
+name: Stayte publish to npm
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
