@@ -31,3 +31,4 @@ Stayte is inspired by multiple libraries, here is a list of them:
 
 - [Nuqs](https://nuqs.47ng.com)
 - [Preact signal](https://preactjs.com/guide/v10/signals)
+- [Jotai](https://jotai.org/)

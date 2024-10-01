@@ -1,0 +1,40 @@
+---
+sidebar_position: 3
+---
+
+# Concept
+
+
+## What is a "persistent state" ?
+
+A persistent state is a state that is stored in a place that is not destroyed when the application is closed, like
+a page reload or a tab close.
+
+There is many different area that is used to store a peristent state
+
+- [Local storage](https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage) (client)
+- [Session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) (client)
+- [Cookies](https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/API/cookies) (SSR)
+- [Query string](https://developer.mozilla.org/fr/docs/Web/API/URLSearchParams) (SSR)
+
+
+In many project, as a developer, you will need to interact with a peristent state
+by using the native browser API or by using a library
+
+***Problem***, there is no library that regroup all peristent state in one place, with a unified API.
+
+Stayte is here to help you to save time and effort.
+
+## What is a "gluon" ?
+
+A gluon is the smallest unit of stayte, it's a class used to interact with every peristent state.
+
+He's able to ***subscribe*** to changes, ***set*** a value and ***get*** the value.
+
+It's look like a signal from preact
+
+Also a gluon can be composed of other gluons and make a chain of reaction.
+
+:::info
+The name "gluon" is inspired by the physical [gluon](https://fr.wikipedia.org/wiki/Gluon), it's a quantum particle that is responsible of the link between the quarks.
+:::

@@ -4,23 +4,22 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-
-import { FcSettings } from "react-icons/fc";
-
-
 import CodeBlock from '@theme/CodeBlock';
 
 import styles from './index.module.css';
-import { useGluon } from 'stayte';
+import Counter from '../components/ClientCounter';
+
 
 const code = `
-import { useGluon } from "stayte";
+import { useGluon, gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  defaultValue: 10
+})
 
 const Counter = () => {
-  const count = useGluon('count', {
-    from: 'query',
-    defaultValue: 10
-  })
+  const count = useGluon(countGluon)
 
   return (
     <button onClick={() => count.value++}>
@@ -30,18 +29,6 @@ const Counter = () => {
 }
 `
 
-const Counter = () => {
-  const count = useGluon('count', {
-    from: 'query',
-  })
-
-  return (
-    <button onClick={() => count.value = parseInt(count.value ?? 0) + 1} className="bg-white outline-none text-black font-bold text-md p-2 border-none rounded-md">
-      count: {count.value ?? 0}
-      <FcSettings/>
-    </button>
-  )
-}
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
