@@ -1,0 +1,35 @@
+---
+sidebar_position: 2
+---
+
+# Installation
+
+## Getting Started
+
+:::warning
+
+Stayte is currently in alpha version, it's only supported on **bun** and **next.js**
+
+:::
+
+To install stayte, go to your project folder and add the following line to your `package.json` file:
+
+```json
+{
+  ...
+  "trustedDependencies": [
+    "stayte"
+  ],
+}
+```
+
+And then run:
+
+```bash
+bun add stayte
+```
+
+
+:::info
+If you are using **next.js**, a patch will be automatically applied to your project, you don't need to do anything. If you want to check the patch, you can find it [here](https://raw.githubusercontent.com/atinseau/stayte/refs/heads/master/packages/stayte/patches/next%4014.2.13.patch)
+:::

@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const init_cwd = process.env.INIT_CWD
 const cwd = process.cwd()
@@ -22,10 +23,19 @@ if (!packageJson.patchedDependencies) {
   packageJson.patchedDependencies = {}
 }
 
+const scannedPackages = getScannedPackages()
+
 // Loop over the patch object and check if the package is already patched
 // if not, we apply the patch in the current directory where statye will be installed
 // and update the package.json with the new patch
 for (const [name, patch] of Object.entries(PATCH)) {
+
+
+  // If the package is not installed on every project, we skip it
+  const packageName = name.split('@')[0]
+  if (!scannedPackages.find((packageJson) => packageJson.dependencies[packageName])) {
+    continue
+  }
 
   if (!packageJson.patchedDependencies[name]) {
     const patchPath = `${cwd}/${patch}`
@@ -40,3 +50,40 @@ for (const [name, patch] of Object.entries(PATCH)) {
 }
 
 fs.writeFileSync(`${init_cwd}/package.json`, JSON.stringify(packageJson, null, 2), 'utf-8')
+
+
+function getScannedPackages() {
+  const packages = searchFiles(init_cwd, 'package.json')
+  return packages.map((packageJson) => {
+    const packageJsonContent = fs.readFileSync(packageJson, 'utf-8')
+    const packageJsonObject = JSON.parse(packageJsonContent)
+    return packageJsonObject
+  })
+}
+
+
+function searchFiles(dir, fileName) {
+  let foundedFiles = []
+  try {
+    // read the contents of the directory
+    const files = fs.readdirSync(dir)
+
+    // search through the files
+    for (const file of files) {
+      // build the full path of the file
+      const filePath = path.join(dir, file);
+      // get the file stats
+      const fileStat = fs.statSync(filePath);
+
+      // if the file is a directory, recursively search the directory
+      if (fileStat.isDirectory() && !file.match(/node_modules|.git|.turbo|\./)) {
+        foundedFiles.push(...searchFiles(filePath, fileName))
+      } else if (file.endsWith(fileName)) {
+        foundedFiles.push(filePath);
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return foundedFiles;
+}
