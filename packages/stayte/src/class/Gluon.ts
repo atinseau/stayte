@@ -9,6 +9,8 @@ export type GluonOptions<DefaultValue, Schema> = {
   defaultValue?: Schema extends ZodType ? z.infer<Schema> : DefaultValue
 }
 
+export type GluonSetter<T> = ((value: T) => T | null) | T
+
 export abstract class GluonSubscription<T> {
   protected subscribers: Set<(value: T | null) => void> = new Set()
 
@@ -124,17 +126,19 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
 
   // If this method return false or throw an error, the value will not be updated
   // instead of returning true, the value will be updated
-  protected update(value: T | null, callback?: () => void) {
+  protected update(value: GluonSetter<T>, callback?: (newValue: T | null) => void) {
 
     const oldValue = this.value
 
     let oldError = this.error
     let alreadHasError = this.error !== null
 
+    const newValue = value instanceof Function ? value(this.value as T) : value
+
     if (this.options.schema) {
-      this.value = this.parse(value)
+      this.value = this.parse(newValue)
     } else {
-      this.value = value
+      this.value = newValue
     }
 
 
@@ -158,8 +162,8 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     // and every next behavior stay the same as a valid value
     // it's mean if the schema is wrong, the callback will be called and every subscribers
     // will be notified of the new value and also the related error
-    this.emit(value)
-    callback?.()
+    this.emit(this.value)
+    callback?.(this.value)
   }
 
 
@@ -198,5 +202,5 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
   // For example, the query gluon will watch the url to fetch the right value
   // and fill the value property accordingly
   abstract setup(...args: any[]): void
-  abstract set(value: T): void
+  abstract set(value: GluonSetter<T>): void
 }

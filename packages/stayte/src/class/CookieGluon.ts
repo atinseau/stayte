@@ -1,5 +1,5 @@
 import { isServer } from "../utils";
-import { Gluon } from "./Gluon";
+import { Gluon, GluonSetter } from "./Gluon";
 import { parse, serialize, CookieSerializeOptions } from 'cookie-es'
 
 export class CookieGluon<T> extends Gluon<T> {
@@ -40,9 +40,8 @@ export class CookieGluon<T> extends Gluon<T> {
     })
   }
 
-  // @ts-ignore
-  set(value: T): void {
-    this.update(value, () => {
+  set(setter: GluonSetter<T>): void {
+    this.update(setter, (value) => {
       if (isServer()) {
         return
       }
