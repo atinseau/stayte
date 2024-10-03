@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useGluon, gluon, computed } from "stayte";
+import { gluon, computed } from "stayte";
+import { useGluon } from "stayte/react";
 
 const countGluon = gluon('count', {
   from: 'session',

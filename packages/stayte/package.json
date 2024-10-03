@@ -1,6 +1,6 @@
 {
   "name": "stayte",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "The persistent state library for the modern web",
   "license": "MIT",
   "author": {
@@ -28,10 +28,15 @@
     "cache",
     "validation"
   ],
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./dist/react.js"
     }
   },
   "files": [

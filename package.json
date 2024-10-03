@@ -1,6 +1,6 @@
 {
   "name": "@stayte/repo",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "workspaces": [
     "packages/*",
     "examples/*",

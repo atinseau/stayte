@@ -12,7 +12,8 @@ import Counter from '../components/ClientCounter';
 
 
 const code = `
-import { useGluon, gluon } from "stayte";
+import { gluon } from "stayte";
+import { useGluon } from "stayte/react";
 
 const countGluon = gluon('count', {
   from: 'query',
@@ -22,11 +23,9 @@ const countGluon = gluon('count', {
 const Counter = () => {
   const count = useGluon(countGluon)
 
-  return (
-    <button onClick={() => count.value++}>
-      count: {count.value}
-    </button>
-  )
+  return <button onClick={() => count.value++}>
+    count: {count.value}
+  </button>
 }
 `
 

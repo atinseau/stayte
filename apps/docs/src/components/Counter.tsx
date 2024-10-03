@@ -1,4 +1,4 @@
-import { useGluon } from 'stayte';
+import { useGluon } from 'stayte/react';
 
 const Counter = () => {
   const count = useGluon('count', {

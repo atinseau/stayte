@@ -11,7 +11,8 @@ Once you have a gluon, you can't directly use it in your component because it's 
 To use a gluon in your component, you need to use the `useGluon` hook and pass the gluon as argument.
 
 ```js
-import { useGluon } from "stayte";
+import { gluon } from "stayte";
+import { useGluon } from "stayte/react";
 
 const countGluon = gluon('count', {
   from: 'query',
@@ -41,6 +42,7 @@ You can update a gluon from a component by using the `set` from the original glu
 the value to the `value` property of the gluon.
 
 ```js
+import { useGluon } from "stayte/react";
 import { countGluon } from "./gluon";
 
 const Count = () => {
@@ -69,3 +71,25 @@ it is containing the following properties:
 - `value`: the value of the gluon
 - `error`: the error of the gluon
 - `gluon`: the original gluon
+
+## Direct declaration
+
+You can also use the `useGluon` to declare a gluon directly in your component, it's useful
+when you don't want to share the gluon between components and you want use the power of the
+gluon in your component.
+
+```js
+// no need to declare the gluon outside of the component
+import { useGluon } from "stayte/react";
+
+function Counter() {
+  const count = useGluon('count', {
+    from: 'query',
+    defaultValue: 10
+  })
+
+  return <button onClick={() => count.value++}>
+    count: {count.value}
+  </button>
+}
+```

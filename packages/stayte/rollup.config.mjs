@@ -11,7 +11,10 @@ export default defineConfig((args) => {
   const isWatch = args.watch === true
 
   return {
-    input: 'src/index.ts',
+    input: [
+      'src/index.ts',
+      'src/react.ts'
+    ],
     output: {
       dir: 'dist',
       format: 'esm',
