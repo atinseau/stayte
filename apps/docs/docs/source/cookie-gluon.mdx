@@ -1,14 +1,14 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
-# Query gluon (SSR)
+# Cookie gluon (SSR)
 
-The query gluon is a gluon that is persisted in the query string of the url.
+The cookie gluon is a gluon that is persisted in the cookies of the browser.
 
 It is fully compatible with server side rendering, it's mean you can use the value
 of the gluon directly in your server side code and stayte will be able to hydrate
-the value from the query string on the client side.
+the value from the cookies founded in the request headers.
 
 :::warning
 Actually, the only framework that is supported is **next.js**, but you can use it in any framework just by
@@ -22,20 +22,19 @@ dynamic rendering mode.
 import { gluon } from "stayte";
 
 const countGluon = gluon('count', {
-  from: 'query',
-  defaultValue: 10
+  from: 'cookie',
 })
 ```
 
 ## Demo
 
-import QueryExample from './_components/Query';
+import CookieExample from './_components/Cookie';
 
-The url will be updated every time the button is clicked, the value will be persisted in the query string, if
-you reload the page, the value will be restored from the query string.
+The cookie in the browser will be updated every time the button is clicked, the value will be persisted in the cookies, if
+you reload the page, the value will be restored from the cookies.
 
-<QueryExample />
+<CookieExample />
 
 ## Extra methods
 
-- `clear()`: Clear the query strign
+- `clear()`: Clear the cookie

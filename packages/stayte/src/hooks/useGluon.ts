@@ -28,8 +28,15 @@ export const useGluon = <
   )
 ): (
     Name extends string
-    ? { value: Schema extends ZodType ? z.infer<Schema> : T, error?: ZodError }
-    : { value: Name extends Gluon<any> | ReadGluon<any> ? NonNullable<Name['value']> : never, error?: ZodError }
+    ? { 
+      value: Schema extends ZodType ? z.infer<Schema> : T,
+      error?: ZodError,
+      gluon: Name extends Gluon<any> | ReadGluon<any> ? Name: GluonMap<Schema extends ZodType ? z.infer<Schema> : T>[U]
+    }
+    : {
+      value: Name extends Gluon<any> | ReadGluon<any> ? NonNullable<ReturnType<Name['get']>> : never,
+      error?: ZodError,
+      gluon: Name extends Gluon<any> | ReadGluon<any> ? Name: GluonMap<Name extends Gluon<any> | ReadGluon<any> ? NonNullable<ReturnType<Name['get']>> : never>[U] }
   ) => {
 
   const gluonRef = useRef<Gluon<any> | ReadGluon<any>>()
@@ -37,12 +44,12 @@ export const useGluon = <
   const countRef = useRef(0)
 
   if (!gluonRef.current) {
-    gluonRef.current = typeof name === 'string'
+    gluonRef.current = (typeof name === 'string' || typeof name === 'undefined')
       ? gluon(name, options as any)
       : name
   }
 
-  const proxyRef = useRef(new Proxy({ value: gluonRef.current!.get(), error: null }, {
+  const proxyRef = useRef(new Proxy({ value: gluonRef.current!.get(), error: null, gluon: gluonRef.current! }, {
     get: (...args) => {
       if (args[1] === 'value') {
         if (asHydrationGuard(gluonRef.current!) && !isMountedRef.current) return null
@@ -51,6 +58,10 @@ export const useGluon = <
 
       if (args[1] === 'error' && gluonRef.current instanceof Gluon) {
         return gluonRef.current!.error
+      }
+
+      if (args[1] === 'gluon') {
+        return gluonRef.current!
       }
 
       return Reflect.get(...args)

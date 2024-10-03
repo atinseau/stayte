@@ -1,0 +1,29 @@
+---
+sidebar_position: 5
+---
+
+# Memory gluon (SSR)
+
+The memory gluon work exactly like other gluon, the only difference is that the value is never persisted in the browser.
+
+It is fully compatible with server side rendering, it's mean you can use the value from the gluon directly in your
+server side code and stayte will be able to hydrate the value
+
+
+## Usage
+
+```js
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'memory',
+  defaultValue: 10
+})
+
+console.log(countGluon.get()) // 10
+countGluon.set(20) // <-- this will update the memory
+console.log(countGluon.get()) // 20
+
+// If page is reloaded, the value will be reset to the default value
+
+```

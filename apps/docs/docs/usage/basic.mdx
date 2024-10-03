@@ -8,16 +8,24 @@ sidebar_position: 1
 
 The first way to use staye is to use it in vanilla javascript code.
 
-You declare a gluon by calling the `gluon` funcition and passing the name of the gluon
+You declare a gluon by calling the `gluon` funcition and passing the name of the gluon and
+the source where the gluon will be persisted or not (memory source)
 
 ```js
 import { gluon } from "stayte";
 
-const nameGluon = gluon('name')
+const nameGluon = gluon('name', {
+  from: <source>
+})
 ```
 
-This gluon is not persistent actually, it's just a variable that can be used across
-your application with every power of a gluon (subscription, set, get), just no persisted...
+allowed source are: 
+
+- `query`: The query string of the url
+- `cookies`: The cookies of the browser
+- `localStorage`: The local storage of the browser
+- `sessionStorage`: The session storage of the browser
+- `memory`: The memory of the browser
 
 ## Persist a gluon
 

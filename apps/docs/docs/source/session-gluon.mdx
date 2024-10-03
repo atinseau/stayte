@@ -1,0 +1,28 @@
+---
+sidebar_position: 4
+---
+
+# Session gluon (client)
+
+The session gluon work exactly like the local gluon, the only difference is that the value is persisted in the session storage of the browser.
+
+## Usage
+
+```js
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'session',
+  defaultValue: 10
+})
+
+console.log(countGluon.get()) // 10
+countGluon.set(20) // <-- this will update the session storage
+console.log(countGluon.get()) // 20
+```
+
+## Demo
+
+import SessionExample from './_components/Session';
+
+<SessionExample />
