@@ -17,7 +17,8 @@ jobs:
         with:
           bun-version: 1.1.26
       - run: bun i --frozen-lockfile
+      - run: cp LICENSE packages/stayte && cp README.md packages/stayte
       - run: cd packages/stayte && bun run build
       - run: cd packages/stayte && npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
