@@ -1,5 +1,5 @@
 import { isServer } from "../utils"
-import { Gluon } from "./Gluon"
+import { Gluon, GluonSetter } from "./Gluon"
 
 // disableSanitize is used to prevent the sanitization of the url
 // it's mean if there is a html tag in the url, the behavior of convertion to a string to prevent sql injection
@@ -50,8 +50,8 @@ export class QueryGluon<T> extends Gluon<T> {
     })
   }
 
-  set(value: T) {
-    this.update(value, () => {
+  set(setter: GluonSetter<T>) {
+    this.update(setter, (value) => {
       if (isServer()) {
         return
       }

@@ -1,5 +1,5 @@
 import { isServer } from "../utils";
-import { Gluon } from "./Gluon";
+import { Gluon, GluonSetter } from "./Gluon";
 
 
 
@@ -30,7 +30,7 @@ export class SessionGluon<T> extends Gluon<T> {
     })
   }
 
-  set(value: T) {
+  set(setter: GluonSetter<T>) {
 
     // Nothing could be done on the server
     // because sessionStorage is not available 
@@ -38,7 +38,7 @@ export class SessionGluon<T> extends Gluon<T> {
       return
     }
 
-    this.update(value, () => {
+    this.update(setter, (value) => {
       sessionStorage.setItem(this.name, typeof value === 'object'
         ? JSON.stringify(value)
         : value as any
