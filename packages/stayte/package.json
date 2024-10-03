@@ -1,11 +1,16 @@
 {
   "name": "stayte",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "The persistent state library for the modern web",
   "license": "MIT",
+  "author": {
+    "name": "Arthur tinseau",
+    "email": "arthurtinseau@live.fr",
+    "url": "https://www.linkedin.com/in/arthur-tinseau"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/atinseau/stayte",
+    "url": "git+https://github.com/atinseau/stayte.git",
     "directory": "packages/stayte"
   },
   "homepage": "https://stayte.vercel.app",
