@@ -7,6 +7,12 @@ export class LocalGluon<T> extends Gluon<T> {
 
   static SECURE_HYDRATION = true
 
+  clear() {
+    this.value = null
+    this.emit(null)
+    localStorage.removeItem(this.name)
+  }
+
   setup(): void {
 
     // There is nothing to do on the server

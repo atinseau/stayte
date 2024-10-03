@@ -12,6 +12,20 @@ export class QueryGluon<T> extends Gluon<T> {
 
   static PUSH_STATE_DELAY = 10
 
+  clear() {
+    if (isServer()) {
+      return
+    }
+
+    this.value = null
+    this.emit(null)
+
+    // Remove the query string from the url
+    const searchParams = new URLSearchParams(window.location.search)
+    searchParams.delete(this.name)
+    window.history.replaceState({ ...window.history.state }, '', `?${searchParams.toString()}`)
+  }
+
   // @ts-ignore
   setup(options: QueryGluonOptions) {
     this.configure(() => {
@@ -26,7 +40,7 @@ export class QueryGluon<T> extends Gluon<T> {
       // If there is no value in the url and the gluon is alread initialized
       // it's mean the user change the value manual in the url so we need to reset the internal value of
       // the gluon by forcing the update with the default value
-      if (this.value && !value) {
+      if (this.value && !value && this.options?.defaultValue) {
         value = this.options.defaultValue
       }
 

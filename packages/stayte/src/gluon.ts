@@ -4,12 +4,14 @@ import { QueryGluon } from "./class/QueryGluon"
 import { LocalGluon } from "./class/LocalGluon"
 import { CookieGluon } from "./class/CookieGluon"
 import { SessionGluon } from "./class/SessionGluon"
+import { MemoryGluon } from "./class/MemoryGluon"
 
 export type GluonMap<T> = {
   "query": QueryGluon<T>
   "cookie": CookieGluon<T>
   "local": LocalGluon<T>
   "session": SessionGluon<T>
+  "memory": MemoryGluon<T>
 }
 
 export const gluon = <
@@ -45,6 +47,10 @@ export const gluon = <
 
   if (options.from === 'session') {
     return new SessionGluon(name, options as any) as any
+  }
+
+  if (options.from === 'memory') {
+    return new MemoryGluon(name, options as any) as any
   }
 
   throw new Error('Cannot create a Gluon from this source')

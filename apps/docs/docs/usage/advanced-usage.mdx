@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Advanced usage
@@ -45,4 +45,44 @@ Stayte is using [zod](https://zod.dev/) to validate the default value, the initi
 
 If there is a schema provided in the configuration object, the value will be validated against the schema.
 
-If the value is not valid, the gluon switch to an **error mode**
+If the value is not valid, the gluon switch to an **error mode** and the `error` property will be filled with the error and the `value` will be `null`.
+
+```js	
+import { z } from "zod";
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  schema: z.number()
+})
+
+countGluon.set('string') // <-- this will trigger the error
+console.log(countGluon.error) // ZodError
+console.log(countGluon.get()) // null
+
+countGluon.set(10) // <-- this will not trigger the error
+console.log(countGluon.error) // null
+console.log(countGluon.get()) // 10
+```
+
+:::info
+`error` property will never be filled if there is no schema provided.
+:::
+
+## Reset a gluon
+
+You can reset a gluon by calling the `reset` method:
+
+```js
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  defaultValue: 10
+})
+
+countGluon.set(20) // <-- this will update the query
+console.log(countGluon.get()) // 20
+
+countGluon.reset() // <-- this will reset the value to the default value
+console.log(countGluon.get()) // 10

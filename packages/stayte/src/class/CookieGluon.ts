@@ -4,6 +4,17 @@ import { parse, serialize, CookieSerializeOptions } from 'cookie-es'
 
 export class CookieGluon<T> extends Gluon<T> {
 
+  clear() {
+    if (isServer()) {
+      return
+    }
+
+    // Bypass schema validation because the value is not valid
+    this.value = null
+    this.emit(null)
+    window.document.cookie = `${this.name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT;`
+  }
+
   setup(options: CookieSerializeOptions): void {
 
     // @ts-ignore
@@ -18,7 +29,7 @@ export class CookieGluon<T> extends Gluon<T> {
       // If there is no value in the url and the gluon is alread initialized
       // it's mean the user change the value manual in the url so we need to reset the internal value of
       // the gluon by forcing the update with the default value
-      if (this.value && !value) {
+      if (this.value && !value && this.options?.defaultValue) {
         value = this.options.defaultValue
       }
 

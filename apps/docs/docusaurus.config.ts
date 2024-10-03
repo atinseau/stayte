@@ -46,6 +46,9 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
+    colorMode: {
+      defaultMode: 'dark',
+    },
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Stayte',
@@ -68,27 +71,27 @@ const config: Config = {
           label: 'GitHub',
           position: 'right',
         },
-        {
-          type: 'docsVersionDropdown',
-        }
+        // {
+        //   type: 'docsVersionDropdown',
+        // }
       ],
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [],
-        },
-        {
-          title: 'Community',
-          items: [],
-        },
-        {
-          title: 'More',
-          items: [],
-        },
-      ],
+      // links: [
+      //   {
+      //     title: 'Docs',
+      //     items: [],
+      //   },
+      //   {
+      //     title: 'Community',
+      //     items: [],
+      //   },
+      //   {
+      //     title: 'More',
+      //     items: [],
+      //   },
+      // ],
       copyright: `Copyright © ${new Date().getFullYear()} Stayte by atinseau`,
     },
     prism: {

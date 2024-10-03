@@ -10,9 +10,9 @@ export type GluonOptions<DefaultValue, Schema> = {
 }
 
 export abstract class GluonSubscription<T> {
-  protected subscribers: Set<(value: T) => void> = new Set()
+  protected subscribers: Set<(value: T | null) => void> = new Set()
 
-  public subscribe(callback: (value: T) => void) {
+  public subscribe(callback: (value: T | null) => void) {
     this.subscribers.add(callback)
     return () => {
       this.subscribers.delete(callback)
@@ -23,7 +23,7 @@ export abstract class GluonSubscription<T> {
     this.subscribers.clear()
   }
 
-  protected emit(value: T) {
+  protected emit(value: T | null) {
     this.subscribers.forEach((callback) => callback(value))
   }
 }
@@ -32,7 +32,7 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
 
   static SECURE_HYDRATION = false
 
-  public value: T | null = null
+  protected value: T | null = null
   public error: ZodError | null = null
 
   private requestId: string | null = null
@@ -124,7 +124,7 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
 
   // If this method return false or throw an error, the value will not be updated
   // instead of returning true, the value will be updated
-  protected update(value: T, callback: () => void) {
+  protected update(value: T | null, callback?: () => void) {
 
     const oldValue = this.value
 
@@ -159,7 +159,7 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     // it's mean if the schema is wrong, the callback will be called and every subscribers
     // will be notified of the new value and also the related error
     this.emit(value)
-    callback()
+    callback?.()
   }
 
 
@@ -177,6 +177,13 @@ export abstract class Gluon<T> extends GluonSubscription<T> {
     }
 
     return this.value as T
+  }
+
+  public reset() {
+    if (!this.options.defaultValue) {
+      throw new Error('Cannot reset a gluon without a default value')
+    }
+    this.set(this.options.defaultValue)
   }
 
   // This method is used to know if the gluon need to be hydrated

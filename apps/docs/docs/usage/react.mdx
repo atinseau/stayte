@@ -1,0 +1,71 @@
+---
+sidebar_position: 2
+---
+
+# React usage
+
+## Use a gluon
+
+Once you have a gluon, you can't directly use it in your component because it's not reactive.
+
+To use a gluon in your component, you need to use the `useGluon` hook and pass the gluon as argument.
+
+```js
+import { useGluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'query',
+  defaultValue: 10
+})
+
+function Counter() {
+  const count = useGluon(countGluon)
+
+  return (
+    <button onClick={() => count.value++}>
+      count: {count.value} // count: 10
+    </button>
+  )
+}
+```
+
+
+:::info
+If you are using the `useGluon` hook, you can use the `value` property to get the value of the gluon.
+:::
+
+
+## To update a gluon from a component
+
+You can update a gluon from a component by using the `set` from the original gluon or simply assigning
+the value to the `value` property of the gluon.
+
+```js
+import { countGluon } from "./gluon";
+
+const Count = () => {
+  const count = useGluon(countGluon)
+
+  const increment = () => {
+    count.value = count.value + 1 // <-- this will trigger a render
+    // or
+    countGluon.set(count.value + 1) // <-- this will trigger a render
+    // or
+    count.gluon.set(count.value + 1) // <-- this will trigger a render
+  }
+
+  return <button onClick={increment}>
+    count: {count.value}
+  </button>
+}
+```
+
+## `useGluon` return
+
+The `useGluon` hook return a proxy of the gluon that will be reactive.
+
+it is containing the following properties:
+
+- `value`: the value of the gluon
+- `error`: the error of the gluon
+- `gluon`: the original gluon

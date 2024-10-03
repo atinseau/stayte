@@ -1,0 +1,96 @@
+---
+sidebar_position: 3
+---
+
+# Local gluon (client)
+
+The local gluon is a gluon that is persisted in the local storage of the browser.
+
+This gluon is not compatible with server side rendering because the local storage is not available in the server side.
+
+## Usage
+
+```js
+import { gluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'local',
+  defaultValue: 10
+})
+
+console.log(countGluon.get()) // 10
+countGluon.set(20) // <-- this will update the local storage
+console.log(countGluon.get()) // 20
+```
+
+## If you are using `useGluon`
+
+So if you are on server side rendered framework, the gluon will be empty at the first render
+and will be filled with the default value or the value founded in the local storage at the second render.
+
+:::info
+If you are sure that you are not on a server side rendered framework, you can pass the `ssr: false` option to the gluon
+and the gluon will be filled with the default value or the value found in the local storage at the first render.
+:::
+
+### Example
+
+If we declare a local gluon with the `ssr: false` with a non server side rendered framework (vite for example)
+
+```js
+import { useGluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'local',
+  defaultValue: 10,
+  ssr: false // <-- disable the ssr skip first render 
+})
+
+const Counter = () => {
+  const count = useGluon(countGluon)
+
+  console.log(count.value) // 10 (only one render)
+
+  return (
+    <button onClick={() => count.value++}>
+      count: {count.value} // count: 10
+    </button>
+  )
+}
+```
+
+But if we declare a local gluon on a server side rendered framework (next.js for example)
+2 renders will be triggered, the first render will be empty and the second render will be filled with the default value or the value founded in the local storage.
+
+```js
+import { useGluon } from "stayte";
+
+const countGluon = gluon('count', {
+  from: 'local',
+  defaultValue: 10
+})
+
+const Counter = () => {
+  const count = useGluon(countGluon)
+
+  // null (first render ) 10 (second render)
+  console.log(count.value)
+
+  return (
+    <button onClick={() => count.value++}>
+      // count: null (first render) count: 10 (second render)
+      count: {count.value ?? 'null'}
+    </button>
+  )
+}
+```
+
+### Demo
+
+import LocalExample from './_components/Local';
+
+<LocalExample />
+
+## Extra methods
+
+- `clear()`: Clear the cookie
