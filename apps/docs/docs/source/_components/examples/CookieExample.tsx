@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
-import { gluon, useGluon } from "stayte"
+import { gluon } from "stayte"
+import { useGluon } from "stayte/react"
 
 const countGluon = gluon('count', {
   from: 'cookie',

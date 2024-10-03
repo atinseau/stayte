@@ -1,5 +1,6 @@
 'use client';
-import { gluon, useGluon } from "stayte"
+import { gluon } from "stayte"
+import { useGluon } from "stayte/react"
 
 const countGluon = gluon('name', {
   from: "memory",

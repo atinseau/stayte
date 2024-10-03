@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useGluon } from 'stayte';
+import { useGluon } from 'stayte/react';
 
 
 const Query = () => {

@@ -1,10 +1,10 @@
 {
   "name": "docs",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "dev": "docusaurus start --port 4000",
+    "dev": "docusaurus start --port 4000 --no-open",
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "start": "docusaurus serve",

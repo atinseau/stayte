@@ -1,6 +1,6 @@
 'use client';
 
-import { useGluon } from "stayte";
+import { useGluon } from "stayte/react";
 import { z } from "zod";
 
 export default function User() {

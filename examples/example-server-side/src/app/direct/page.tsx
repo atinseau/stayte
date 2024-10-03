@@ -1,5 +1,5 @@
 'use client';
-import { useGluon } from "stayte";
+import { useGluon } from "stayte/react";
 
 export default function Page() {
 
