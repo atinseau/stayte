@@ -15,6 +15,8 @@ export default defineConfig((args) => {
     output: {
       dir: 'dist',
       format: 'esm',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
       sourcemap: isWatch,
     },
     external: [
