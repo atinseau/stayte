@@ -1,6 +1,6 @@
 {
   "name": "@stayte/repo",
-  "version": "0.0.15",
+  "version": "0.1.0",
   "workspaces": [
     "packages/*",
     "examples/*",
@@ -11,7 +11,9 @@
     "build": "turbo run build",
     "clean": "turbo run clean",
     "fclean": "turbo run fclean && rm -rf node_modules .turbo bun.lockb pnpm-lock.yaml",
-    "bump": "npm version --workspaces --include-workspace-root --no-workspaces-update --no-git-tag-version --no-commit-hooks"
+    "bump": "npm version --workspaces --include-workspace-root --no-workspaces-update --no-git-tag-version --no-commit-hooks",
+    "local:registry": "npm set registry http://localhost:4873 && verdaccio",
+    "postlocal:registry": "npm set registry https://registry.npmjs.org"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -20,7 +22,8 @@
     "typescript": "5.6.2"
   },
   "dependencies": {
-    "turbo": "^2.1.2"
+    "turbo": "^2.1.2",
+    "verdaccio": "6.0.0"
   },
   "packageManager": "bun@1.1.29",
   "trustedDependencies": [
