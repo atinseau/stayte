@@ -1,6 +1,6 @@
 {
   "name": "stayte",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "The persistent state library for the modern web",
   "license": "MIT",
   "author": {
@@ -48,7 +48,9 @@
   "scripts": {
     "postinstall": "node scripts/patch.js",
     "dev": "rollup --config rollup.config.mjs --watch",
-    "build": "rm -rf dist && rollup --config rollup.config.mjs"
+    "build": "rm -rf dist && rollup --config rollup.config.mjs",
+    "clean": "rm -rf dist",
+    "fclean": "rm -rf dist .turbo node_modules"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "15.3.0",

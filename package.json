@@ -1,6 +1,6 @@
 {
   "name": "@stayte/repo",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "workspaces": [
     "packages/*",
     "examples/*",
@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
+    "clean": "turbo run clean",
+    "fclean": "turbo run fclean && rm -rf node_modules .turbo bun.lockb pnpm-lock.yaml",
     "bump": "npm version --workspaces --include-workspace-root --no-workspaces-update --no-git-tag-version --no-commit-hooks"
   },
   "devDependencies": {
@@ -20,11 +22,11 @@
   "dependencies": {
     "turbo": "^2.1.2"
   },
-  "packageManager": "bun@1.1.26",
+  "packageManager": "bun@1.1.29",
   "trustedDependencies": [
     "stayte"
   ],
   "patchedDependencies": {
-    "next@14.2.13": "patches/next@14.2.13.patch"
+    "next@14.2.14": "patches/next@14.2.14.patch"
   }
 }

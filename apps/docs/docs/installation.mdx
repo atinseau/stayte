@@ -6,15 +6,15 @@ sidebar_position: 2
 
 ## Getting Started
 
-:::warning
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Stayte is currently in alpha version, it's only supported on **bun** and **next.js**
-
-:::
+<Tabs>
+  <TabItem value="bun" label="bun" default>
 
 To install stayte, go to your project folder and add the following line to your `package.json` file:
 
-```json
+```json title="package.json"
 {
   ...
   "trustedDependencies": [
@@ -28,16 +28,62 @@ And then run:
 ```bash
 bun add stayte zod
 ```
+  </TabItem>
 
-***Note:*** For now you need to install zod manually because stayte doesn't include it in its bundle.
 
 
-:::info
-If you are using **next.js**, a patch will be automatically applied to your project, you don't need to do anything. If you want to check the patch, you can find it [here](https://raw.githubusercontent.com/atinseau/stayte/refs/heads/master/packages/stayte/patches/next%4014.2.13.patch)
-:::
+  <TabItem value="pnpm" label="pnpm">
+Create or add a `.npmrc` file in the root of your project and add the following line:
+``` ini title=".npmrc"
+enable-pre-post-scripts=true
+side-effects-cache=false
+```
+
+Then run:
+
+```bash
+pnpm add stayte zod
+```
+  </TabItem>
+
+  <TabItem value="npm" label="npm">
+  Npm doesn't support the patching mechanism
+
+  So it's not supported yet...
+  </TabItem>
+
+    <TabItem value="yarn" label="yarn">
+
+  Yarn install documentation is not available yet...
+
+  </TabItem>
+</Tabs>
+
+-----
+
+
+***Note:*** For now you need to install zod manually because stayte doesn't include it in its bundle and it's a requirement 
+to use the library ***(in the future, stayte will be able to be used without zod)***
+
 
 Now you can use stayte in your project by importing it:
 
 ```js
 import { ... } from "stayte";
 ```
+
+
+
+## Next.js
+
+If you are using **next.js**, a patch will be automatically applied to your project, you don't need to do anything. If you want to check the patch, you can find every patch [here](https://github.com/atinseau/stayte/tree/master/packages/stayte/patches).
+
+Statye actually only work in dynamic rendering mode, so if you are using static rendering, unexpected behavior will appear.
+
+***Note:*** Stayte is only available since **next.js** 14.2.13 and above.
+if you are using an older version, leave a message in the [issues](https://github.com/atinseau/stayte/issues) and I will try to update the patch.
+
+:::warning
+Sometimes, your package manager don't directly apply the patch, in this case, just run the command
+to install the dependencies and the patch will be applied automatically.
+:::

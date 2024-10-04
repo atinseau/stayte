@@ -1,18 +1,21 @@
 {
   "name": "@stayte/example-server-side",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next",
+    "fclean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
     "react": "^18",
     "stayte": "workspace:*",
     "react-dom": "^18",
-    "next": "14.2.13"
+    "next": "14.2.14",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "typescript": "^5",
