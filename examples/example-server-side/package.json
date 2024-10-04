@@ -1,6 +1,6 @@
 {
   "name": "@stayte/example-server-side",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
@@ -14,7 +14,7 @@
     "react": "^18",
     "stayte": "workspace:*",
     "react-dom": "^18",
-    "next": "14.2.14",
+    "next": "14.2.13",
     "zod": "3.23.8"
   },
   "devDependencies": {

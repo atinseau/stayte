@@ -71,6 +71,7 @@ if (process.argv[2] === 'child') {
 
     // If the package is not installed on every project, we skip it
     // No need to patch
+    // or the package is already patched
     if (!currentPackageJson) {
       continue
     }
@@ -78,9 +79,21 @@ if (process.argv[2] === 'child') {
     // If the package is installed but the version is not supported
     // it's mean there is no patch for this version
     if (currentPackageJson?.dependencies?.[packageName] !== patchVersion) {
-      missingPatches[packageName] = currentPackageJson.dependencies[packageName]
+
+      const currentVersion = currentPackageJson.dependencies[packageName]
+      const patchedKey = packageName + '@' + currentVersion
+
+      // If the package is already patched, we don't need to patch it again
+      // even if there an other patch for an other version
+      // so skip missing patches phase
+      if (patchedDependencies[patchedKey]) {
+        continue
+      }
+
+      missingPatches[packageName] = currentVersion
       continue
     }
+
 
     // If there is a patch for this package, reset the missing patch object
     delete missingPatches[packageName]
