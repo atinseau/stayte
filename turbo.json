@@ -14,6 +14,14 @@
         ".next/**",
         "build/**"
       ]
+    },
+    "clean": {
+      "persistent": true,
+      "cache": false
+    },
+    "fclean": {
+      "persistent": true,
+      "cache": false
     }
   }
 }

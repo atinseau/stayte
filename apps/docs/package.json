@@ -1,6 +1,6 @@
 {
   "name": "docs",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -10,7 +10,9 @@
     "start": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "clean": "rm -rf build .docusaurus",
+    "fclean": "rm -rf build .docusaurus node_modules .turbo"
   },
   "dependencies": {
     "@docusaurus/core": "3.5.2",

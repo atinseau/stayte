@@ -33,7 +33,7 @@ const Counter = () => {
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner, "flex flex-wrap flex-col md:flex-row justify-center")}>
+    <header className={clsx('hero hero--primary', styles.heroBanner, "flex flex-col md:flex-row justify-center")}>
       <div>
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
@@ -48,15 +48,16 @@ function HomepageHeader() {
         </div>
       </div>
 
-      <div className='text-left'>
+      <div className='text-left w-full sm:w-auto'>
         <CodeBlock
           language="jsx"
+          className='max-w-[100%] sm:max-w-[unset]'
           title='Index.tsx'
           metastring='qsd'
           showLineNumbers
           children={code.trim()}
         />
-        <div className='flex gap-2 items-center'>
+        <div className='flex flex-col sm:flex-row gap-2 items-center'>
           <Counter />
           <p className='font-bold text-white mb-0'>Click here and watch the url !</p>
         </div>
